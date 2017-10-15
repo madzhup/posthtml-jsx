@@ -1,28 +1,12 @@
-const jsx = require('./lib/jsx')
+const jsx = require('./lib/jsx');
+const defaultRender = require('posthtml-render');
 
-/**
- * @author Michael Ciniawsky (@michael-ciniawsky) <michael.ciniawsky@gmail.com>
- * @description JSX Renderer for PostHTML
- *
- * @module posthtml-jsx
- * @version 1.0.0
- *
- * @requires ./lib/jsx.js
- *
- * @method postHTMLJSX
- *
- * @param  {Object} options Options
- *
- * @return {Function} jsx  JSX
- */
 module.exports = (options) => {
-  options = options || {}
-  options.type = options.type || 'es2015'
-  options.name = options.name
-  options.props = options.props || '...props'
-  options.export = options.export || true
+  options = options || {};
+  options.props = options.props || '...props';
+  options.render = options.render || defaultRender;
 
   return function postHTMLJSX (tree) {
-    return jsx(tree, options)
-  }
+    return jsx(tree, options);
+  };
 }

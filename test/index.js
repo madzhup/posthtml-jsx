@@ -9,56 +9,35 @@ const expected = (file) => readFileSync(join(__dirname, 'expect', file), 'utf8')
 const posthtml = require('posthtml')
 const jsx = require('..')
 
-test('1 - ES5', (t) => {
+test('Static name', (t) => {
   return posthtml()
     .process(
       fixtures('index.html'), {
         render: jsx({
-          type: 'es5',
-          name: 'ES5',
+          name: 'SvgComponent',
           props: ['...prop1', 'prop2'],
-          export: true
         })
       }
     )
     .then((result) => {
-      writeFileSync('./expect/ES5.jsx', result.html, 'utf8')
-      t.is(expected('ES5.jsx'), result.html)
+      // writeFileSync('./expect/SvgComponent.jsx', result.html, 'utf8')
+      t.is(expected('SvgComponent.jsx'), result.html)
     })
 })
 
-test('2 - ES2015', (t) => {
+test('Dynamic name', (t) => {
   return posthtml()
     .process(
       fixtures('index.html'), {
         render: jsx({
-          type: 'es2015',
-          name: 'ES2015',
+          name: (opts, tree) => tree.options.from,
           props: ['...prop1', 'prop2'],
-          export: true
-        })
+        }),
+        from: 'SvgComponent'
       }
     )
     .then((result) => {
-      writeFileSync('./expect/ES2015.jsx', result.html, 'utf8')
-      t.is(expected('ES2015.jsx'), result.html)
-    })
-})
-
-test('3 - Stateless', (t) => {
-  return posthtml()
-    .process(
-      fixtures('index.html'), {
-        render: jsx({
-          type: 'stateless',
-          name: 'stateless',
-          props: ['prop1', 'prop2'],
-          export: true
-        })
-      }
-    )
-    .then((result) => {
-      writeFileSync('./expect/Stateless.jsx', result.html, 'utf8')
-      t.is(expected('Stateless.jsx'), result.html)
+      // writeFileSync('./expect/SvgComponent.jsx', result.html, 'utf8')
+      t.is(expected('SvgComponent.jsx'), result.html)
     })
 })

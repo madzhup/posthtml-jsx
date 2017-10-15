@@ -1,16 +1,11 @@
-[![NPM][npm]][npm-url]
-[![Deps][deps]][deps-url]
-[![Tests][build]][build-url]
-[![Coverage][cover]][cover-url]
-[![Standard Code Style][style]][style-url]
-[![Chat][chat]][chat-badge]
+# PostHTML JSX SVG <img align="right" width="200" height="220" title="PostHTML" src="http://posthtml.github.io/posthtml/logo.svg">
 
-# PostHTML JSX <img align="right" width="200" height="220" title="PostHTML" src="http://posthtml.github.io/posthtml/logo.svg">
+Inspired by [posthtml-jsx](https://github.com/posthtml/posthtml-jsx), use [posthtml-svg-mode](https://github.com/kisenka/svg-baker/tree/master/packages/posthtml-svg-mode) render.
 
 ## Install
 
 ```bash
-npm i -D posthtml-jsx
+npm i -D posthtml-jsx-svg
 ```
 
 ## Usage
@@ -23,13 +18,11 @@ posthtml(plugins)
 
 ## Options
 
-**`type`:** `{String}`: Type of the Component ( es5 || es2015 || stateless )
+**`render`:** `{Function}`: Custom render
 
-**`name`:** `{String}`: Name of the Component
+**`name`:** `{String|Function}`: Name of the Component. If function passed, it will be called with this options and posthtml tree as arguments
 
 **`props`:** `{String|Array}`: Props of the Component
-
-**`export`:** `{Boolean}`: Export Component JS Module (true || false)
 
 ## Example
 
@@ -37,14 +30,13 @@ posthtml(plugins)
 import { readFileSync, writeFileSync } from 'fs'
 
 import posthtml from 'posthtml'
-import jsx from 'posthtml-jsx'
+import jsx from 'posthtml-jsx-svg'
 
 const html = readFileSync('./index.html', 'utf8')
 
 posthtml()
   .process(html, {
     render: jsx({
-      type: 'es2015'
       name: 'Test'
       props: ['prop', '{ prop }', '...props']
       export: true
@@ -60,58 +52,17 @@ posthtml()
 ```
 
 ```js
-import { Component } from 'react'
+import React from 'react';
 
-class Test extends Component {
-  render (prop, { prop }, ...props) {
-    return (
-      <div id={test.id} className={test.class}>
-        {test.content}
-      </div>
-    )
-  }
-}
+const SvgComponent = (...prop1, prop2) => (
+<div id="{id}" class="{class}">
+  {ctx.content}
+</div>
+);
 
-export default Test
+export default SvgComponent;
 ```
-
-## Maintainers
-
-<table>
-  <tbody>
-   <tr>
-    <td align="center">
-      <img width="150 height="150"
-      src="https://avatars.githubusercontent.com/u/5419992?v=3&s=150">
-      <br />
-      <a href="https://github.com/michael-ciniawsky">Michael Ciniawsky</a>
-    </td>
-   </tr>
-  <tbody>
-</table>
-
-## Contributing
-
-See [PostHTML Guidelines](https://github.com/posthtml/posthtml/tree/master/docs) and [CONTRIBUTING](CONTRIBUTING.md).
 
 ## LICENSE
 
 [MIT](LICENSE)
-
-[npm]: https://img.shields.io/npm/v/posthtml-jsx.svg
-[npm-url]: https://npmjs.com/package/posthtml-jsx
-
-[deps]: https://david-dm.org/posthtml/posthtml-jsx.svg
-[deps-url]: https://david-dm.org/posthtml/posthtml-jsx
-
-[build]: http://img.shields.io/travis/posthtml/posthtml-jsx.svg
-[build-url]: https://travis-ci.org/posthtml/posthtml-jsx
-
-[cover]: https://coveralls.io/repos/github/posthtml/posthtml-jsx/badge.svg?branch=master
-[cover-url]: https://coveralls.io/github/posthtml/posthtml-jsx?branch=master
-
-[style]: https://img.shields.io/badge/code%20style-standard-yellow.svg
-[style-url]: http://standardjs.com/
-
-[chat]: https://badges.gitter.im/posthtml/posthtml.svg
-[chat-badge]: https://gitter.im/posthtml/posthtml?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge"
